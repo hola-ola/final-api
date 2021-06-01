@@ -6,7 +6,7 @@ const LENGTH_OF_STAY_ENUM = [
   "Long stay",
 ];
 
-const LISTING_TYPE_ENUM = ["House", "Apartment", "Room in a shared place"];
+const LISTING_TYPE_ENUM = ["House", "Apartment", "Room"];
 
 module.exports = LENGTH_OF_STAY_ENUM;
 module.exports = LISTING_TYPE_ENUM;
