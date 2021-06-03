@@ -9,8 +9,8 @@ router.get("/", (req, res, next) => {
 const authRoutes = require("./auth");
 router.use("/auth", authRoutes);
 
-/* LISTING routes */
-const listingRoutes = require("./listing");
-router.use("/listing", listingRoutes);
+/* LISTINGS routes */
+const listingsRoutes = require("./listings");
+router.use("/listings", listingsRoutes);
 
 module.exports = router;
