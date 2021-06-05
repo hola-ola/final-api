@@ -57,7 +57,7 @@ const listingSchema = new Schema(
       type: [String],
       required: true,
     },
-    forSmokers: {
+    smokersWelcome: {
       type: Boolean,
       required: true,
     },
@@ -75,7 +75,6 @@ const listingSchema = new Schema(
     },
     extraRemarks: {
       type: String,
-      required: true,
     },
     ambienceDescription: {
       type: String,
