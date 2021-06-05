@@ -6,10 +6,10 @@ const Listing = require("../models/Listing.model");
 // Require necessary (isLoggedIn) middleware in order to control access to specific routes
 const isLoggedIn = require("../middleware/isLoggedIn");
 
-router.post("/create", (req, res) => {
+router.post("/create", isLoggedIn, (req, res) => {
   console.log("Are we here?");
   Listing.findOne({
-    title: req.body.title,
+    title: req.body.formValues.title,
   })
     .then((foundListing) => {
       if (foundListing) {
@@ -38,10 +38,11 @@ router.post("/create", (req, res) => {
         ambienceDescription,
         imagesGallery,
         availability,
-      } = req.body;
+      } = req.body.formValues;
 
       Listing.create({
         title,
+        owner: req.body.userId,
         country,
         city,
         lengthOfStay,
@@ -61,6 +62,7 @@ router.post("/create", (req, res) => {
         availability,
       })
         .then((createdListing) => {
+          console.log("Hello there! We are here!");
           res.json({ listing: createdListing });
         })
         .catch((err) => {

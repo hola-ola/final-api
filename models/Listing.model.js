@@ -17,76 +17,76 @@ const listingSchema = new Schema(
     },
     country: {
       type: String,
-      required: true,
+      // required: true,
     },
     city: {
       type: String,
-      required: true,
+      // required: true,
     },
     lengthOfStay: {
       type: String,
-      required: true,
-      enum: LENGTH_OF_STAY_ENUM,
+      // required: true,
+      // enum: LENGTH_OF_STAY_ENUM,
     },
     type: {
       type: String,
-      required: true,
-      enum: LISTING_TYPE_ENUM,
+      // required: true,
+      // enum: LISTING_TYPE_ENUM,
     },
     numberOfSleepingSpots: {
       type: String,
-      required: true,
+      // required: true,
     },
     generalDescription: {
       type: String,
-      required: true,
+      // required: true,
     },
     kitchenEquipment: {
       type: [String],
-      required: true,
+      // required: true,
     },
     bathroomEquipment: {
       type: [String],
-      required: true,
+      // required: true,
     },
     workSetup: {
       type: [String],
-      required: true,
+      // required: true,
     },
     accessability: {
       type: [String],
-      required: true,
+      // required: true,
     },
     smokersWelcome: {
       type: Boolean,
-      required: true,
+      // required: true,
     },
     kidsWelcome: {
       type: Boolean,
-      required: true,
+      // required: true,
     },
     petsWelcome: {
       type: Boolean,
-      required: true,
+      // required: true,
     },
     spaceOutside: {
       type: Boolean,
-      required: true,
+      // required: true,
     },
     extraRemarks: {
       type: String,
     },
     ambienceDescription: {
       type: String,
-      required: true,
+      // required: true,
     },
     imagesGallery: {
       type: [String],
-      required: true,
+      // required: true,
     },
     availability: {
       type: Boolean,
-      required: true,
+      // required: true,
     },
   },
   {
