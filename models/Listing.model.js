@@ -24,7 +24,7 @@ const listingSchema = new Schema(
       // required: true,
     },
     lengthOfStay: {
-      type: String,
+      type: [String],
       // required: true,
       // enum: LENGTH_OF_STAY_ENUM,
     },
@@ -76,8 +76,8 @@ const listingSchema = new Schema(
     extraRemarks: {
       type: String,
     },
-    ambienceDescription: {
-      type: String,
+    ambienceLabels: {
+      type: [String],
       // required: true,
     },
     imagesGallery: {
