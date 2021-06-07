@@ -11,7 +11,11 @@ const userSchema = new Schema(
     password: { type: String, required: true },
     firstName: String,
     lastName: String,
-    profilePic: { type: String, default: "" },
+    profilePic: {
+      type: String,
+      default:
+        "https://lh3.googleusercontent.com/proxy/wOhrwL-Wn-17iz8v9fooF-BRWU-HlUJhWbrRN7Jj_EnUWX0apYdu5K8ighkCsCwHx7UmaQwQwA9ePojHd4ng6OGosX0A7fnMhGg2urvNyNB0xWv2cM61DQQbQNtDuiOBAIkhRQg-LpfGtT52yyDjOUaWUiE",
+    },
     userBio: String,
     userReviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
     wishlist: [{ type: Schema.Types.ObjectId, ref: "Listing" }],

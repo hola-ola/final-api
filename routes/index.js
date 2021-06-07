@@ -13,4 +13,8 @@ router.use("/auth", authRoutes);
 const listingsRoutes = require("./listings");
 router.use("/listings", listingsRoutes);
 
+/* USER routes */
+const userRoutes = require("./user");
+router.use("/user", userRoutes);
+
 module.exports = router;

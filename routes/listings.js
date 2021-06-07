@@ -7,7 +7,6 @@ const Listing = require("../models/Listing.model");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
 router.post("/create", isLoggedIn, (req, res) => {
-  console.log("Are we here?");
   Listing.findOne({
     title: req.body.formValues.title,
   })
