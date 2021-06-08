@@ -7,6 +7,27 @@ const Listing = require("../models/Listing.model");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
 router.post("/create", isLoggedIn, (req, res) => {
+  const {
+    title,
+    country,
+    city,
+    lengthOfStay,
+    type,
+    numberOfSleepingSpots,
+    generalDescription,
+    kitchenEquipment,
+    bathroomEquipment,
+    accessability,
+    smokersWelcome,
+    kidsWelcome,
+    petsWelcome,
+    spaceOutside,
+    extraRemarks,
+    ambienceLabels,
+    imagesGallery,
+    availability,
+  } = req.body.formValues;
+
   Listing.findOne({
     title: req.body.formValues.title,
   })
@@ -18,47 +39,9 @@ router.post("/create", isLoggedIn, (req, res) => {
         });
       }
 
-      const {
-        title,
-        country,
-        city,
-        lengthOfStay,
-        type,
-        numberOfSleepingSpots,
-        generalDescription,
-        kitchenEquipment,
-        bathroomEquipment,
-        accessability,
-        smokersWelcome,
-        kidsWelcome,
-        petsWelcome,
-        spaceOutside,
-        extraRemarks,
-        ambienceDescription,
-        imagesGallery,
-        availability,
-      } = req.body.formValues;
-
       Listing.create({
-        title,
-        owner: req.body.userId,
-        country,
-        city,
-        lengthOfStay,
-        type,
-        numberOfSleepingSpots,
-        generalDescription,
-        kitchenEquipment,
-        bathroomEquipment,
-        accessability,
-        smokersWelcome,
-        kidsWelcome,
-        petsWelcome,
-        spaceOutside,
-        extraRemarks,
-        ambienceDescription,
-        imagesGallery,
-        availability,
+        ...req.body.formValues,
+        owner: req.user._id,
       })
         .then((createdListing) => {
           console.log("Hello there! We are here!");
