@@ -28,6 +28,12 @@ router.post("/create", isLoggedIn, (req, res) => {
     availability,
   } = req.body.formValues;
 
+  if (!title || !country || !city) {
+    return res
+      .status(400)
+      .json({ errorMessage: "Please fill in all required fields" });
+  }
+
   Listing.findOne({
     title: req.body.formValues.title,
   })
@@ -56,6 +62,10 @@ router.post("/create", isLoggedIn, (req, res) => {
       console.log(err);
       res.json(500).json({ errorMessage: err.message });
     });
+});
+
+router.get("/:listingId", isLoggedIn, (req, res) => {
+  console.log("We are here:", req.body);
 });
 
 module.exports = router;

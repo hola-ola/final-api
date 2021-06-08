@@ -53,7 +53,7 @@ const listingSchema = new Schema(
       type: [String],
       // required: true,
     },
-    accessability: {
+    accessibility: {
       type: [String],
       // required: true,
     },
