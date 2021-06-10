@@ -50,22 +50,29 @@ router.post("/create", isLoggedIn, (req, res) => {
         owner: req.user._id,
       })
         .then((createdListing) => {
-          console.log("Hello there! We are here!");
+          console.log("Hello there! We are here!", createdListing);
           res.json({ listing: createdListing });
         })
         .catch((err) => {
-          console.log(err);
-          res.json(500).json({ errorMessage: err.message });
+          console.log("THIS JUST RAN!", err);
+          res.status(500).json({ errorMessage: err.message });
         });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ errorMessage: err.message });
+    });
+});
+
+router.get("/:listingId", isLoggedIn, (req, res) => {
+  Listing.findOne({ _id: req.params.listingId })
+    .then((foundListing) => {
+      res.json({ listing: foundListing });
     })
     .catch((err) => {
       console.log(err);
       res.json(500).json({ errorMessage: err.message });
     });
-});
-
-router.get("/:listingId", isLoggedIn, (req, res) => {
-  console.log("We are here:", req.body);
 });
 
 module.exports = router;
