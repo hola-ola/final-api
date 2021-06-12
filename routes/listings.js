@@ -99,4 +99,27 @@ router.put("/:listingId/edit", isLoggedIn, (req, res) => {
     });
 });
 
+router.get("/:listingId/delete", isLoggedIn, (req, res) => {
+  Listing.findOne({ _id: req.params.listingId })
+    .then((foundListing) => {
+      res.json({ listing: foundListing });
+    })
+    .catch((err) => {
+      // console.log(err);
+      res.json(500).json({ errorMessage: err.message });
+    });
+});
+
+router.get("/:listingId/removed", isLoggedIn, (req, res) => {
+  Listing.findOneAndDelete({ _id: req.params.listingId })
+    .then((foundListing) => {
+      res.json({ listing: foundListing });
+      console.log("The listing has been removed from the database");
+    })
+    .catch((err) => {
+      // console.log(err);
+      res.json(500).json({ errorMessage: err.message });
+    });
+});
+
 module.exports = router;
