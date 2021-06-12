@@ -75,4 +75,17 @@ router.get("/:listingId", isLoggedIn, (req, res) => {
     });
 });
 
+router.get("/:listingId/edit", isLoggedIn, (req, res) => {
+  Listing.findOne({ _id: req.params.listingId })
+    .then((foundListing) => {
+      res.json({ listing: foundListing });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(500).json({ errorMessage: err.message });
+    });
+});
+
+router.post("/:listingId/edit", isLoggedIn, (req, res) => {});
+
 module.exports = router;
