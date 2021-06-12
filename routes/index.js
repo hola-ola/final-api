@@ -17,4 +17,8 @@ router.use("/listings", listingsRoutes);
 const userRoutes = require("./user");
 router.use("/user", userRoutes);
 
+/* IMAGE routes */
+const imageRoutes = require("./image");
+router.use("/image", imageRoutes);
+
 module.exports = router;
