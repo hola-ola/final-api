@@ -81,11 +81,22 @@ router.get("/:listingId/edit", isLoggedIn, (req, res) => {
       res.json({ listing: foundListing });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       res.json(500).json({ errorMessage: err.message });
     });
 });
 
-router.post("/:listingId/edit", isLoggedIn, (req, res) => {});
+router.put("/:listingId/edit", isLoggedIn, (req, res) => {
+  console.log(req.body);
+  Listing.findOneAndUpdate({ _id: req.params.listingId }, req.body, {
+    new: true,
+  })
+    .then((updatedListing) => {
+      res.json({ listing: updatedListing });
+    })
+    .catch((err) => {
+      console.err(err.response);
+    });
+});
 
 module.exports = router;
