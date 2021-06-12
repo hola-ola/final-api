@@ -63,4 +63,42 @@ router.get("/:username/delete", isLoggedIn, (req, res) => {
     });
 });
 
+// EDIT User profile
+router.post("/:username/update", isLoggedIn, (req, res) => {
+  console.log("This is user id: ", req.user._id);
+  console.log("These are the params: ", req.params);
+  User.findById(req.user._id).then((foundUser) => {
+    if (!foundUser) {
+      return res.status(404).json({ errorMessage: "User not found!" });
+      console.log("SOS Update: no user");
+    }
+    if (foundUser.username !== req.params.username) {
+      return res
+        .status(404)
+        .json({ errorMessage: "You're not the owner of this account!" });
+    }
+    console.log("INFO Update: we have the user");
+    User.findOne({
+      $or: [{ username: req.body.username }, { email: req.body.email }],
+    }).then((existingUser) => {
+      if (existingUser) {
+        console.log("Hello", existingUser);
+        return res.status(404).json({
+          errorMessage: "This username or email are already in use",
+        });
+      }
+      if (!existingUser) {
+        console.log("INFO Update: the data is available");
+        User.findByIdAndUpdate(
+          req.user._id,
+          { firstName, lastName, username, email, userBio, profilePic },
+          { new: true }
+        ).then((updatedUser) => {
+          res.json({ user: updatedUser });
+        });
+      }
+    });
+  });
+});
+
 module.exports = router;
