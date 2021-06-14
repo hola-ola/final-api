@@ -14,7 +14,7 @@ const userSchema = new Schema(
     profilePic: {
       type: String,
       default:
-        "https://lh3.googleusercontent.com/proxy/wOhrwL-Wn-17iz8v9fooF-BRWU-HlUJhWbrRN7Jj_EnUWX0apYdu5K8ighkCsCwHx7UmaQwQwA9ePojHd4ng6OGosX0A7fnMhGg2urvNyNB0xWv2cM61DQQbQNtDuiOBAIkhRQg-LpfGtT52yyDjOUaWUiE",
+        "https://res.cloudinary.com/dmvukjvqe/image/upload/v1623512202/hop-flat-swap/original_ff3tk3.jpg",
     },
     userBio: String,
     userReviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
