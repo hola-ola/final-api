@@ -6,62 +6,79 @@ const Listing = require("../models/Listing.model");
 // Require necessary (isLoggedIn) middleware in order to control access to specific routes
 const isLoggedIn = require("../middleware/isLoggedIn");
 
+const User = require("../models/User.model");
+
 router.post("/create", isLoggedIn, (req, res) => {
-  const {
-    title,
-    country,
-    city,
-    lengthOfStay,
-    type,
-    numberOfSleepingSpots,
-    generalDescription,
-    kitchenEquipment,
-    bathroomEquipment,
-    accessability,
-    smokersWelcome,
-    kidsWelcome,
-    petsWelcome,
-    spaceOutside,
-    extraRemarks,
-    ambienceLabels,
-    imagesGallery,
-    availability,
-  } = req.body.formValues;
+  User.findOne({ _id: req.user._id }).then((foundUser) => {
+    if (foundUser.userListing) {
+      return res
+        .status(400)
+        .json({ errorMessage: "The user already created a listing" });
+    }
 
-  if (!title || !country || !city) {
-    return res
-      .status(400)
-      .json({ errorMessage: "Please fill in all required fields" });
-  }
+    const {
+      title,
+      country,
+      city,
+      lengthOfStay,
+      type,
+      numberOfSleepingSpots,
+      generalDescription,
+      kitchenEquipment,
+      bathroomEquipment,
+      accessability,
+      smokersWelcome,
+      kidsWelcome,
+      petsWelcome,
+      spaceOutside,
+      extraRemarks,
+      ambienceLabels,
+      imagesGallery,
+      availability,
+    } = req.body.formValues;
 
-  Listing.findOne({
-    title: req.body.formValues.title,
-  })
-    .then((foundListing) => {
-      if (foundListing) {
-        return res.status(400).json({
-          errorMessage: "A listing with that title already exists",
-          key: "title",
-        });
-      }
+    if (!title || !country || !city) {
+      return res
+        .status(400)
+        .json({ errorMessage: "Please fill in all required fields" });
+    }
 
-      Listing.create({
-        ...req.body.formValues,
-        owner: req.user._id,
-      })
-        .then((createdListing) => {
-          console.log("Hello there! We are here!", createdListing);
-          res.json({ listing: createdListing });
-        })
-        .catch((err) => {
-          console.log("THIS JUST RAN!", err);
-          res.status(500).json({ errorMessage: err.message });
-        });
+    Listing.create({
+      ...req.body.formValues,
+      owner: foundUser,
     })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ errorMessage: err.message });
-    });
+      .then((createdListing) => {
+        res.json({ listing: createdListing });
+      })
+      .catch((err) => {
+        res.status(500).json({ errorMessage: err.message });
+      });
+
+    //koniec UserFindOne
+  });
+
+  // Listing.create({
+  //   ...req.body.formValues,
+  //   owner: req.user._id,
+  // })
+  //   .then((createdListing) => {
+  //     User.findByIdAndUpdate(
+  //       req.user._id,
+  //       {
+  //         $push: { userListing: createdListing },
+  //       },
+  //       { new: true }
+  //     );
+  //   })
+  //   .then(() => {
+  //     console.log(createdListing);
+  //     // res.json({ listing: createdListing });
+  //   })
+  //   .catch((err) => {
+  //     res.status(500).json({ errorMessage: err.message });
+  //   });
+
+  //koniec RouterPost
 });
 
 router.get("/:listingId", isLoggedIn, (req, res) => {

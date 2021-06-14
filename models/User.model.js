@@ -17,6 +17,10 @@ const userSchema = new Schema(
         "https://res.cloudinary.com/dmvukjvqe/image/upload/v1623512202/hop-flat-swap/original_ff3tk3.jpg",
     },
     userBio: String,
+    userListing: {
+      type: Schema.Types.ObjectId,
+      ref: "Listing",
+    },
     userReviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
     wishlist: [{ type: Schema.Types.ObjectId, ref: "Listing" }],
   },
