@@ -33,4 +33,8 @@ router.use("/user", userRoutes);
 const imageRoutes = require("./image");
 router.use("/image", imageRoutes);
 
+// SEARCH routes
+const searchRoutes = require("./results");
+router.use("/results", searchRoutes);
+
 module.exports = router;
