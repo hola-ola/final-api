@@ -33,8 +33,12 @@ router.use("/user", userRoutes);
 const imageRoutes = require("./image");
 router.use("/image", imageRoutes);
 
-// SEARCH routes
+/* SEARCH routes */
 const searchRoutes = require("./results");
 router.use("/results", searchRoutes);
+
+/* REVIEWS routes */
+const reviewsRoutes = require("./reviews");
+router.use("/reviews", reviewsRoutes);
 
 module.exports = router;
