@@ -4,6 +4,7 @@ const upload = require("../middleware/cloudinary");
 
 //add isOwner
 router.post("/", isLoggedIn, upload.single("image"), (req, res) => {
+  console.log("GETTING REQ?");
   if (!req.file) {
     res.status(500).json("Something went wrong with the upload");
     return;
