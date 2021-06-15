@@ -47,6 +47,16 @@ router.post("/create", isLoggedIn, (req, res) => {
       })
         .then((createdListing) => {
           res.json({ listing: createdListing });
+          // console.log(createdListing);
+          User.findOneAndUpdate(
+            { _id: createdListing.owner._id },
+            { $push: { userListing: createdListing._id } },
+            { new: true }
+          )
+            .then(() => console.log("User had been updated"))
+            .catch((err) => {
+              res.status(400).json({ errorMessage: err.message });
+            });
         })
         .catch((err) => {
           res.status(500).json({ errorMessage: err.message });
