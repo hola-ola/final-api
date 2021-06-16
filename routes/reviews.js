@@ -26,6 +26,7 @@ router.post("/:username/add", isLoggedIn, (req, res) => {
 
       Review.create({
         ...req.body.form,
+        startDate: req.body.form.startDate.toDateString(),
         reviewedUser: foundUser._id,
         reviewingUser: req.user._id,
       }).then((createdReview) => {
@@ -33,6 +34,43 @@ router.post("/:username/add", isLoggedIn, (req, res) => {
         res.json({ review: createdReview });
       });
     })
+    .catch((err) => {
+      res.status(500).json({ errorMessage: err.message });
+    });
+});
+
+// GET received reviews
+router.get("/:username/received-reviews", isLoggedIn, (req, res) => {
+  console.log("Reviewed user: ", req.params.username);
+  User.findOne({ username: req.params.username })
+    .then((foundUser) => {
+      Review.find({ reviewedUser: foundUser._id })
+        .populate("reviewingUser")
+        .populate("reviewedUser")
+        .then((receivedReviews) => {
+          console.log("We found all received reviews", receivedReviews);
+          res.json(receivedReviews);
+        });
+    })
+
+    .catch((err) => {
+      res.status(500).json({ errorMessage: err.message });
+    });
+});
+
+// GET given reviews
+router.get("/:username/given-reviews", isLoggedIn, (req, res) => {
+  User.findOne({ username: req.params.username })
+    .then((foundUser) => {
+      Review.find({ reviewingUser: foundUser._id })
+        .populate("reviewedUser")
+        .populate("reviewingUser")
+        .then((receivedReviews) => {
+          console.log("We found all received reviews");
+          res.json(receivedReviews);
+        });
+    })
+
     .catch((err) => {
       res.status(500).json({ errorMessage: err.message });
     });
