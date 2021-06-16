@@ -4,6 +4,11 @@ const Listing = require("../models/Listing.model");
 const User = require("../models/User.model");
 
 const isLoggedIn = require("../middleware/isLoggedIn");
+const isOwner = require("../middleware/isOwner");
+
+// router.get("/create", isLoggedIn, (req, res) => {
+
+// })
 
 router.post("/create", isLoggedIn, (req, res) => {
   User.findOne({ _id: req.user._id })
@@ -79,7 +84,8 @@ router.get("/:listingId", isLoggedIn, (req, res) => {
     });
 });
 
-router.get("/:listingId/edit", isLoggedIn, (req, res) => {
+router.get("/:listingId/edit", isLoggedIn, isOwner, (req, res) => {
+  console.log(isOwner);
   Listing.findOne({ _id: req.params.listingId })
     .then((foundListing) => {
       res.json({ listing: foundListing });

@@ -1,20 +1,17 @@
-const Session = require("../models/Session.model");
+const Listing = require("../models/Listing.model");
 
 module.exports = (req, res, next) => {
   if (!req.headers.authorization || req.headers.authorization === "null") {
     return res.status(403).json({ errorMessage: "You are not logged in" });
   }
-
-  Session.findById(req.headers.authorization)
-    .populate({ path: "user", model: "User" })
-    .then((session) => {
-      if (!session) {
+  Listing.findById(req.params.listingId)
+    .populate("owner")
+    .then((foundListing) => {
+      if (foundListing._id !== req.user.userListing[0]) {
         return res
           .status(404)
-          .json({ errorMessage: "No session started for this user" });
+          .json({ errorMessage: "You're not the owner of this listing" });
       }
-      // makes the user available in `req.user` from now onwards
-      req.user = session.user;
       next();
     })
     .catch((err) => {
