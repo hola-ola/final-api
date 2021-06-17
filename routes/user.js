@@ -12,6 +12,7 @@ router.get("/:username", isLoggedIn, (req, res) => {
   User.findOne({
     username: req.params.username,
   })
+    .populate("userListing")
     .then((foundUser) => {
       if (!foundUser) {
         return res.status(400).json({
