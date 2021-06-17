@@ -84,8 +84,7 @@ router.get("/:listingId", isLoggedIn, (req, res) => {
     });
 });
 
-router.get("/:listingId/edit", isLoggedIn, isOwner, (req, res) => {
-  console.log(isOwner);
+router.get("/:listingId/edit", isLoggedIn, (req, res) => {
   Listing.findOne({ _id: req.params.listingId })
     .then((foundListing) => {
       res.json({ listing: foundListing });
