@@ -124,4 +124,18 @@ router.get("/:listingId/removed", isLoggedIn, (req, res) => {
     });
 });
 
+router.get("/:username/listing", isLoggedIn, (req, res) => {
+  User.findOne({ username: req.params.username })
+
+    .then((foundUser) => {
+      Listing.findById(foundUser.userListing).then((foundListing) => {
+        res.json({ listing: foundListing });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(500).json({ errorMessage: err.message });
+    });
+});
+
 module.exports = router;

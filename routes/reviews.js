@@ -48,7 +48,6 @@ router.get("/:username/received-reviews", isLoggedIn, (req, res) => {
         .populate("reviewingUser")
         .populate("reviewedUser")
         .then((receivedReviews) => {
-          console.log("We found all received reviews", receivedReviews);
           res.json(receivedReviews);
         });
     })
@@ -66,11 +65,9 @@ router.get("/:username/given-reviews", isLoggedIn, (req, res) => {
         .populate("reviewedUser")
         .populate("reviewingUser")
         .then((receivedReviews) => {
-          console.log("We found all received reviews");
           res.json(receivedReviews);
         });
     })
-
     .catch((err) => {
       res.status(500).json({ errorMessage: err.message });
     });
