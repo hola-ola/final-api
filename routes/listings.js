@@ -6,10 +6,6 @@ const User = require("../models/User.model");
 const isLoggedIn = require("../middleware/isLoggedIn");
 const isOwner = require("../middleware/isOwner");
 
-// router.get("/create", isLoggedIn, (req, res) => {
-
-// })
-
 router.post("/create", isLoggedIn, (req, res) => {
   User.findOne({ _id: req.user._id })
     .then((foundUser) => {
