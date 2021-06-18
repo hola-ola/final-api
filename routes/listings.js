@@ -9,7 +9,7 @@ const isOwner = require("../middleware/isOwner");
 router.post("/create", isLoggedIn, (req, res) => {
   User.findOne({ _id: req.user._id })
     .then((foundUser) => {
-      if (foundUser.userListing.length > 0) {
+      if (foundUser.userListing && foundUser.userListing.length > 0) {
         return res
           .status(400)
           .json({ errorMessage: "The user already created a listing" });
