@@ -113,12 +113,36 @@ router.get("/:listingId/delete", isLoggedIn, (req, res) => {
     });
 });
 
-router.get("/:listingId/removed", isLoggedIn, (req, res) => {
-  Listing.findOneAndDelete({ _id: req.params.listingId })
-    .then((foundListing) => {
-      res.json({ listing: foundListing });
-      console.log("The listing has been removed from the database");
+router.get("/:plantId/delete/confirmed", isLoggedIn, (req, res) => {
+  Plant.findById(req.params.plantId)
+    .then((foundPlant) => {
+      if (!foundPlant) {
+        return res.redirect("/");
+      }
+      if (foundPlant.owner.toString() != req.session.user._id.toString()) {
+        return res.redirect("/");
+      }
+      Plant.findByIdAndDelete(foundPlant._id).then(() => {
+        User.findByIdAndUpdate(req.session.user._id, {
+          $pull: { usersPlants: req.params.plantId },
+        }).then(() => res.render("plant/delete-confirm"));
+      });
     })
+    .catch();
+});
+
+router.get("/:listingId/removed", isLoggedIn, (req, res) => {
+  Listing.findByIdAndDelete(req.params.listingId)
+    .then((foundListing) => {
+      User.findByIdAndUpdate(req.user._id, {
+        $pull: { userListing: foundListing._id },
+      }).then(() => {
+        console.log("The user has been updated in the database");
+      });
+    })
+    .then((res) =>
+      console.log("The listing has been removed from the database")
+    )
     .catch((err) => {
       res.json(500).json({ errorMessage: err.message });
     });
