@@ -9,7 +9,7 @@ const isOwner = require("../middleware/isOwner");
 router.post("/create", isLoggedIn, (req, res) => {
   User.findOne({ _id: req.user._id })
     .then((foundUser) => {
-      if (foundUser.userListing && foundUser.userListing.length > 0) {
+      if (foundUser.userListing.length > 0) {
         return res
           .status(400)
           .json({ errorMessage: "The user already created a listing" });
@@ -47,14 +47,17 @@ router.post("/create", isLoggedIn, (req, res) => {
         owner: foundUser,
       })
         .then((createdListing) => {
-          res.json({ listing: createdListing });
+          // res.json({ listing: createdListing });
           // console.log(createdListing);
           User.findOneAndUpdate(
             { _id: createdListing.owner._id },
             { $push: { userListing: createdListing._id } },
             { new: true }
           )
-            .then(() => console.log("User had been updated"))
+            .then((user) => {
+              console.log("User had been updated");
+              res.json({ listing: createdListing, user });
+            })
             .catch((err) => {
               res.status(400).json({ errorMessage: err.message });
             });
