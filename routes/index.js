@@ -41,7 +41,7 @@ router.use("/results", searchRoutes);
 const reviewsRoutes = require("./reviews");
 router.use("/reviews", reviewsRoutes);
 
-/* CONVERSATIONS routes */
-router.use("/conversations", require("./conversations"));
+/* MESSAGES routes */
+router.use("/messages", require("./messages"));
 
 module.exports = router;
