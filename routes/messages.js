@@ -3,7 +3,7 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 const Conversation = require("../models/Conversation.model");
 
 router.get("/", isLoggedIn, (req, res) => {
-  Conversation.find({ user1: req.user._id })
+  Conversation.find({ $or: [{ user1: req.user._id }, { user2: req.user._id }] })
     .then((foundConversations) => {
       res.json({ conversations: foundConversations });
     })
