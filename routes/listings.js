@@ -147,4 +147,16 @@ router.get("/:username/listing", isLoggedIn, (req, res) => {
     });
 });
 
+router.get("/:listingId/wishlist-add", isLoggedIn, (req, res) => {
+  // console.log("These are the params: ", req.params);
+  User.findByIdAndUpdate(
+    req.user._id,
+    { $push: { wishlist: req.params.listingId } },
+    { new: true }
+  ).then(() => {
+    // console.log("The listing added to user's wishlist");
+    res.json(true);
+  });
+});
+
 module.exports = router;

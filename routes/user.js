@@ -14,6 +14,7 @@ router.get("/:username", isLoggedIn, (req, res) => {
     username: req.params.username,
   })
     .populate("userListing")
+    .populate("wishlist")
     .then((foundUser) => {
       if (!foundUser) {
         return res.status(400).json({
@@ -91,6 +92,7 @@ router.put("/update", isLoggedIn, (req, res) => {
     );
 });
 
+// UPDATE user image
 router.put("/update-img", isLoggedIn, (req, res) => {
   // console.log(req.body, req.headers);
   User.findByIdAndUpdate(
@@ -102,15 +104,15 @@ router.put("/update-img", isLoggedIn, (req, res) => {
   });
 });
 
-router.put("/wishlist/add", isLoggedIn, (req, res) => {
-  // console.log(req.body, req.headers);
-  User.findByIdAndUpdate(
-    req.user._id,
-    { wishlist: req.body.listingId },
-    { new: true }
-  ).then((newAndImprovedUser) => {
-    res.json(true);
-  });
+// GET user wishlist
+router.get("/:username/wishlist", isLoggedIn, (req, res) => {
+  // console.log("Is this username?", req.params.username);
+  User.findOne({ username: req.params.username })
+    .populate("wishlist")
+    .then((foundUser) => {
+      res.json({ user: foundUser });
+    })
+    .catch((err) => console.error(err.response));
 });
 
 module.exports = router;

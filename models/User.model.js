@@ -24,7 +24,7 @@ const userSchema = new Schema(
       },
     ],
     userReviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
-    wishlist: [{ type: Schema.Types.ObjectId, ref: "Listing" }],
+    wishlist: [{ type: Schema.Types.ObjectId, ref: "Listing", default: [] }],
   },
   {
     timestamps: true,
