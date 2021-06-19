@@ -91,7 +91,7 @@ router.get("/:listingId/edit", isLoggedIn, (req, res) => {
 });
 
 router.put("/:listingId/edit", isLoggedIn, (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   Listing.findOneAndUpdate({ _id: req.params.listingId }, req.body, {
     new: true,
   })
@@ -117,7 +117,6 @@ router.get("/:listingId/removed", isLoggedIn, (req, res) => {
   Listing.findOneAndDelete({ _id: req.params.listingId })
     .then((foundListing) => {
       res.json({ listing: foundListing });
-      console.log("The listing has been removed from the database");
     })
     .catch((err) => {
       res.json(500).json({ errorMessage: err.message });
