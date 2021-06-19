@@ -3,6 +3,7 @@ const router = require("express").Router();
 // Require the models in order to interact with the database
 const User = require("../models/User.model");
 const Session = require("../models/Session.model");
+const Listing = require("../models/Listing.model");
 
 // Require necessary (isLoggedIn) middleware in order to control access to specific routes
 const isLoggedIn = require("../middleware/isLoggedIn");
@@ -30,10 +31,13 @@ router.get("/:username", isLoggedIn, (req, res) => {
 
 // DELETE User profile
 router.get("/:username/delete", isLoggedIn, (req, res) => {
-  User.findById(req.user._id)
-    .then((foundUser) => {
-      return User.findByIdAndDelete(foundUser._id)
+  Listing.findOneAndDelete({ owner: req.user._id })
+    .populate("owner")
+    .then((deletedListing) => {
+      console.log("Listing is deleted!");
+      User.findByIdAndDelete(req.user._id)
         .then((deletedUser) => {
+          console.log("User is deleted!");
           return Session.findOneAndDelete({
             user: deletedUser._id,
           });
@@ -44,7 +48,7 @@ router.get("/:username/delete", isLoggedIn, (req, res) => {
         });
     })
     .then(() => {
-      console.log("We removed the session and the user!");
+      console.log("Listing, user and session all deleted!");
       res.json(true);
     })
     .catch((err) => {
@@ -88,13 +92,24 @@ router.put("/update", isLoggedIn, (req, res) => {
 });
 
 router.put("/update-img", isLoggedIn, (req, res) => {
-  console.log(req.body, req.headers);
+  // console.log(req.body, req.headers);
   User.findByIdAndUpdate(
     req.user._id,
     { profilePic: req.body.singleImage },
     { new: true }
   ).then((newAndImprovedUser) => {
     res.json({ user: newAndImprovedUser });
+  });
+});
+
+router.put("/wishlist/add", isLoggedIn, (req, res) => {
+  // console.log(req.body, req.headers);
+  User.findByIdAndUpdate(
+    req.user._id,
+    { wishlist: req.body.listingId },
+    { new: true }
+  ).then((newAndImprovedUser) => {
+    res.json(true);
   });
 });
 

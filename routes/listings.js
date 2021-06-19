@@ -116,24 +116,6 @@ router.get("/:listingId/delete", isLoggedIn, isOwner, (req, res) => {
     });
 });
 
-router.get("/:plantId/delete/confirmed", isLoggedIn, (req, res) => {
-  Plant.findById(req.params.plantId)
-    .then((foundPlant) => {
-      if (!foundPlant) {
-        return res.redirect("/");
-      }
-      if (foundPlant.owner.toString() != req.session.user._id.toString()) {
-        return res.redirect("/");
-      }
-      Plant.findByIdAndDelete(foundPlant._id).then(() => {
-        User.findByIdAndUpdate(req.session.user._id, {
-          $pull: { usersPlants: req.params.plantId },
-        }).then(() => res.render("plant/delete-confirm"));
-      });
-    })
-    .catch();
-});
-
 router.get("/:listingId/removed", isLoggedIn, (req, res) => {
   Listing.findByIdAndDelete(req.params.listingId)
     .then((foundListing) => {
