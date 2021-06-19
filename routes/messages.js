@@ -10,12 +10,22 @@ router.get("/", isLoggedIn, (req, res) => {
     .catch((err) => res.status(500).json({ errorMessage: err.message }));
 });
 
-router.get("/new", isLoggedIn, (req, res) => {
-  console.log("Running");
-});
-
-router.post("new", isLoggedIn, (req, res) => {
-  console.log("Running Running");
+//CONVO ID is what we want
+router.post("/start-conversation", isLoggedIn, (req, res) => {
+  //validate that req.body.user2 exists
+  //find a convo between the users (req.user & user2)
+  //if NO CONVO -> create a convo res.json(CONVO ID)
+  //if CONVO -> res.json(CONVO ID)
+  Conversation.findOne({
+    $or: [{ user1: req.user._id }, { user2: req.user._id }],
+  })
+    .then((foundConversation) => {
+      if (foundConversation) {
+        return res.json({ conversation: foundConversation._id });
+      }
+      // Conversation.create({user1: req.user._id, user2: req.body.....}).then(newConversation => res.json({conversation: newConversation._id}))
+    })
+    .catch((err) => res.status(500).json({ errorMessage: err.message }));
 });
 
 module.exports = router;
