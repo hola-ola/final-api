@@ -80,7 +80,7 @@ router.get("/:listingId", isLoggedIn, (req, res) => {
     });
 });
 
-router.get("/:listingId/edit", isLoggedIn, (req, res) => {
+router.get("/:listingId/edit", isLoggedIn, isOwner, (req, res) => {
   Listing.findOne({ _id: req.params.listingId })
     .then((foundListing) => {
       res.json({ listing: foundListing });
@@ -103,7 +103,7 @@ router.put("/:listingId/edit", isLoggedIn, (req, res) => {
     });
 });
 
-router.get("/:listingId/delete", isLoggedIn, (req, res) => {
+router.get("/:listingId/delete", isLoggedIn, isOwner, (req, res) => {
   Listing.findOne({ _id: req.params.listingId })
     .then((foundListing) => {
       res.json({ listing: foundListing });

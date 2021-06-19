@@ -7,9 +7,9 @@ module.exports = (req, res, next) => {
   Listing.findById(req.params.listingId)
     .populate("owner")
     .then((foundListing) => {
-      if (foundListing._id !== req.user.userListing[0]) {
+      if (foundListing._id.toString() !== req.user.userListing[0].toString()) {
         return res
-          .status(404)
+          .status(403)
           .json({ errorMessage: "You're not the owner of this listing" });
       }
       next();
