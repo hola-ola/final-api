@@ -47,14 +47,17 @@ router.post("/create", isLoggedIn, (req, res) => {
         owner: foundUser,
       })
         .then((createdListing) => {
-          res.json({ listing: createdListing });
+          // res.json({ listing: createdListing });
           // console.log(createdListing);
           User.findOneAndUpdate(
             { _id: createdListing.owner._id },
             { $push: { userListing: createdListing._id } },
             { new: true }
           )
-            .then(() => console.log("User had been updated"))
+            .then((user) => {
+              console.log("User had been updated");
+              res.json({ listing: createdListing, user });
+            })
             .catch((err) => {
               res.status(400).json({ errorMessage: err.message });
             });
@@ -80,7 +83,7 @@ router.get("/:listingId", isLoggedIn, (req, res) => {
     });
 });
 
-router.get("/:listingId/edit", isLoggedIn, (req, res) => {
+router.get("/:listingId/edit", isLoggedIn, isOwner, (req, res) => {
   Listing.findOne({ _id: req.params.listingId })
     .then((foundListing) => {
       res.json({ listing: foundListing });
@@ -103,7 +106,7 @@ router.put("/:listingId/edit", isLoggedIn, (req, res) => {
     });
 });
 
-router.get("/:listingId/delete", isLoggedIn, (req, res) => {
+router.get("/:listingId/delete", isLoggedIn, isOwner, (req, res) => {
   Listing.findOne({ _id: req.params.listingId })
     .then((foundListing) => {
       res.json({ listing: foundListing });
