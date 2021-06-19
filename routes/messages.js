@@ -12,6 +12,7 @@ router.get("/", isLoggedIn, (req, res) => {
 
 //CONVO ID is what we want
 router.post("/start-conversation", isLoggedIn, (req, res) => {
+  console.log(req.body);
   //validate that req.body.user2 exists
   //find a convo between the users (req.user & user2)
   //if NO CONVO -> create a convo res.json(CONVO ID)
