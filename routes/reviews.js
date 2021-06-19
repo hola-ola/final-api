@@ -9,12 +9,12 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 
 // ADD User review
 router.post("/:username/add", isLoggedIn, (req, res) => {
-  console.log("Review: ", req.body.form);
-  console.log("Logged user: ", req.user.username);
-  console.log("Reviewed user: ", req.params.username);
+  // console.log("Review: ", req.body.form);
+  // console.log("Logged user: ", req.user.username);
+  // console.log("Reviewed user: ", req.params.username);
   User.findOne({ username: req.params.username })
     .then((foundUser) => {
-      console.log("We found reviewed user");
+      // console.log("We found reviewed user");
 
       const { title, body, score, startDate, endDate } = req.body.form;
 
@@ -30,7 +30,7 @@ router.post("/:username/add", isLoggedIn, (req, res) => {
         reviewedUser: foundUser._id,
         reviewingUser: req.user._id,
       }).then((createdReview) => {
-        console.log("We created a review");
+        // console.log("We created a review");
         res.json({ review: createdReview });
       });
     })

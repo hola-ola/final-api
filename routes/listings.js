@@ -91,7 +91,7 @@ router.get("/:listingId/edit", isLoggedIn, (req, res) => {
 });
 
 router.put("/:listingId/edit", isLoggedIn, (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   Listing.findOneAndUpdate({ _id: req.params.listingId }, req.body, {
     new: true,
   })
