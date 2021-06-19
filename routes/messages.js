@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const isLoggedIn = require("../middleware/isLoggedIn");
 const Conversation = require("../models/Conversation.model");
+const User = require("../models/User.model");
 
 router.get("/", isLoggedIn, (req, res) => {
   Conversation.find({ $or: [{ user1: req.user._id }, { user2: req.user._id }] })
@@ -10,21 +11,28 @@ router.get("/", isLoggedIn, (req, res) => {
     .catch((err) => res.status(500).json({ errorMessage: err.message }));
 });
 
-//CONVO ID is what we want
 router.post("/start-conversation", isLoggedIn, (req, res) => {
-  console.log(req.body);
-  //validate that req.body.user2 exists
-  //find a convo between the users (req.user & user2)
-  //if NO CONVO -> create a convo res.json(CONVO ID)
-  //if CONVO -> res.json(CONVO ID)
-  Conversation.findOne({
-    $or: [{ user1: req.user._id }, { user2: req.user._id }],
-  })
-    .then((foundConversation) => {
-      if (foundConversation) {
-        return res.json({ conversation: foundConversation._id });
-      }
-      // Conversation.create({user1: req.user._id, user2: req.body.....}).then(newConversation => res.json({conversation: newConversation._id}))
+  User.findOne({ _id: req.body.recepient })
+    .then((foundUser) => {
+      Conversation.findOne({
+        $and: [
+          { $or: [{ user1: req.user._id }, { user2: req.foundUser._id }] },
+          { $or: [{ user1: req.foundUser._id }, { user2: req.user._id }] },
+        ],
+      }).then((foundConversation) => {
+        if (foundConversation) {
+          return res.json({ conversation: foundConversation._id });
+        } else {
+          console.log("There is no conversation between the users");
+          Conversation.create({
+            user1: req.user._id,
+            user2: req.foundUser._id,
+          }).then((newConversation) => {
+            console.log("Conversation created");
+            res.json({ conversation: newConversation._id });
+          });
+        }
+      });
     })
     .catch((err) => res.status(500).json({ errorMessage: err.message }));
 });
