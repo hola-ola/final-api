@@ -13,11 +13,11 @@ router.get("/", isLoggedIn, (req, res) => {
 
 router.post("/start-conversation", isLoggedIn, (req, res) => {
   User.findOne({ _id: req.body.recepient })
-    .then((foundUser) => {
+    .then(() => {
       Conversation.findOne({
         $and: [
-          { $or: [{ user1: req.user._id }, { user2: req.foundUser._id }] },
-          { $or: [{ user1: req.foundUser._id }, { user2: req.user._id }] },
+          { $or: [{ user1: req.user._id }, { user2: req.body._id }] },
+          { $or: [{ user1: req.body._id }, { user2: req.user._id }] },
         ],
       }).then((foundConversation) => {
         if (foundConversation) {
