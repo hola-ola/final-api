@@ -115,4 +115,9 @@ router.get("/:username/wishlist", isLoggedIn, (req, res) => {
     .catch((err) => console.error(err.response));
 });
 
+// DELETE from user wishlist
+router.get("/:username/wishlist/delete", isLoggedIn, (req, res) => {
+  console.log("Is this listing id?");
+});
+
 module.exports = router;
