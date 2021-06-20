@@ -6,8 +6,8 @@ const reviewSchema = new Schema({
   title: { type: String, required: true },
   body: { type: String, required: true },
   score: { type: Number, min: 1, max: 5, required: true },
-  startDate: { type: Date, required: true },
-  endDate: { type: Date, required: true },
+  startDate: { type: Date },
+  endDate: { type: Date },
 });
 
 const Review = model("Review", reviewSchema);

@@ -116,8 +116,22 @@ router.get("/:username/wishlist", isLoggedIn, (req, res) => {
 });
 
 // DELETE from user wishlist
-router.get("/:username/wishlist/delete", isLoggedIn, (req, res) => {
-  console.log("Is this listing id?");
+router.put("/:username/wishlist-delete", isLoggedIn, (req, res) => {
+  // console.log("Listing ID?", req.body.listingId);
+  // console.log("Req.user", req.user.username);
+  User.findOne({ username: req.user.username })
+    .populate("wishlist")
+    .then((foundUser) => {
+      User.findByIdAndUpdate(
+        foundUser._id,
+        { $pull: { wishlist: req.body.listingId } },
+        { new: true }
+      ).then((updatedUser) => {
+        // console.log("updatedUser: ", updatedUser);
+        res.json({ updatedWishlist: updatedUser.wishlist });
+      });
+    })
+    .catch((err) => console.error(err.response));
 });
 
 module.exports = router;
