@@ -16,9 +16,9 @@ router.post("/:username/add", isLoggedIn, (req, res) => {
     .then((foundUser) => {
       // console.log("We found reviewed user");
 
-      const { title, body, score, startDate, endDate } = req.body.form;
+      const { body, score, startDate, endDate } = req.body.form;
 
-      if (!title || !body || !score) {
+      if (!body || !score) {
         return res
           .status(400)
           .json({ errorMessage: "Please fill in all required fields" });
