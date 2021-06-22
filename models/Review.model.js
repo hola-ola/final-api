@@ -4,6 +4,7 @@ const reviewSchema = new Schema(
   {
     reviewedUser: { type: Schema.Types.ObjectId, ref: "User" },
     reviewingUser: { type: Schema.Types.ObjectId, ref: "User" },
+    title: { type: String },
     body: { type: String, required: true },
     score: { type: Number, min: 1, max: 5, required: true },
     startDate: { type: Date },
